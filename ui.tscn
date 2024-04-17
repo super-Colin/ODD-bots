@@ -1,0 +1,58 @@
+[gd_scene load_steps=6 format=3 uid="uid://ccabwq2sfc50p"]
+
+[ext_resource type="Script" path="res://ui.gd" id="1_mk7xc"]
+[ext_resource type="Texture2D" uid="uid://de2wbn1mkqgn6" path="res://assets/images/BlueSkyBit.png" id="2_govwo"]
+[ext_resource type="Texture2D" uid="uid://bhortd7hssyw5" path="res://assets/images/DoorCutout.png" id="3_2v3ew"]
+[ext_resource type="Texture2D" uid="uid://b5hx8nmpq543e" path="res://assets/images/ArenaCutout.png" id="4_3bhjw"]
+[ext_resource type="Texture2D" uid="uid://dkbunfx5x5f1b" path="res://assets/images/Game_over_brutal.png" id="5_6abfi"]
+
+[node name="UI" type="Node"]
+script = ExtResource("1_mk7xc")
+
+[node name="Background" type="Node2D" parent="."]
+position = Vector2(960, 540)
+scale = Vector2(1.4, 1.4)
+
+[node name="BlueSkyBit" type="Sprite2D" parent="Background"]
+scale = Vector2(1.70082, 1.70082)
+texture = ExtResource("2_govwo")
+
+[node name="DoorCutout" type="Sprite2D" parent="Background"]
+texture = ExtResource("3_2v3ew")
+
+[node name="ArenaCutout" type="Sprite2D" parent="Background"]
+texture = ExtResource("4_3bhjw")
+
+[node name="MainMenu" type="Node2D" parent="."]
+
+[node name="Button_StartGame" type="Button" parent="MainMenu"]
+unique_name_in_owner = true
+offset_left = 29.0
+offset_top = 14.0
+offset_right = 125.0
+offset_bottom = 45.0
+theme_override_font_sizes/font_size = 24
+text = "Start Game"
+metadata/_edit_use_anchors_ = true
+
+[node name="SessionInfo" type="Node2D" parent="."]
+
+[node name="Label" type="Label" parent="SessionInfo"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 1638.0
+offset_top = 17.0
+offset_right = 1745.0
+offset_bottom = 40.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 24
+text = "Waves Won: 0"
+
+[node name="GameOver" type="Node2D" parent="."]
+visible = false
+
+[node name="GameOverBrutal" type="Sprite2D" parent="GameOver"]
+position = Vector2(965, 658)
+scale = Vector2(1.9043, 1.9043)
+texture = ExtResource("5_6abfi")

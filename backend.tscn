@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://wfixe82476bx"]
+
+[ext_resource type="Script" path="res://backend.gd" id="1_tup2y"]
+[ext_resource type="PackedScene" uid="uid://ccabwq2sfc50p" path="res://ui.tscn" id="2_orgr3"]
+
+[node name="Backend" type="Node"]
+script = ExtResource("1_tup2y")
+
+[node name="UI" parent="." instance=ExtResource("2_orgr3")]
+
+[node name="GameBits" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Debug" type="Node2D" parent="."]
