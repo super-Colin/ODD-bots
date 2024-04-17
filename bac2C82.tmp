@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvo4vne687r3k"]
+
+[ext_resource type="Script" path="res://backend.gd" id="1_fb3ml"]
+[ext_resource type="PackedScene" uid="uid://h22fhg1bmhar" path="res://ui.tscn" id="2_lw6dt"]
+
+[node name="Backend" type="Node"]
+script = ExtResource("1_fb3ml")
+
+[node name="UI" parent="." instance=ExtResource("2_lw6dt")]
+
+[node name="GameBits" type="Node" parent="."]
+
+[node name="Debug" type="Node" parent="."]
+
+[node name="DebugPlayerTeam" type="Button" parent="Debug"]
+unique_name_in_owner = true
+offset_left = 1792.0
+offset_top = 23.0
+offset_right = 1896.0
+offset_bottom = 54.0
+text = "Player Team"
+
+[node name="DebugMessage" type="Label" parent="Debug"]
+unique_name_in_owner = true
+offset_left = 142.0
+offset_top = 990.0
+offset_right = 182.0
+offset_bottom = 1013.0
+theme_override_font_sizes/font_size = 32
+text = "sthstsat"

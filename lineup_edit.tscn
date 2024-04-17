@@ -1,0 +1,67 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1w318wyllk8t"]
+
+[ext_resource type="Script" path="res://lineup_edit.gd" id="1_1ouqf"]
+
+[node name="LineupEdit" type="Node2D"]
+script = ExtResource("1_1ouqf")
+
+[node name="ConfirmChoice" type="Button" parent="."]
+unique_name_in_owner = true
+offset_left = 798.0
+offset_top = 669.0
+offset_right = 917.0
+offset_bottom = 700.0
+theme_override_font_sizes/font_size = 24
+text = "Confirm Linup"
+
+[node name="lineupPosition4Ref" type="Node2D" parent="."]
+position = Vector2(250, 500)
+
+[node name="PositionTitle" type="Label" parent="lineupPosition4Ref"]
+offset_left = -75.0
+offset_top = 102.0
+offset_right = 78.0
+offset_bottom = 147.0
+theme_override_font_sizes/font_size = 32
+text = "Position 4"
+
+[node name="lineupPosition3Ref" type="Node2D" parent="."]
+position = Vector2(550, 500)
+
+[node name="PositionTitle" type="Label" parent="lineupPosition3Ref"]
+offset_left = -75.0
+offset_top = 102.0
+offset_right = 78.0
+offset_bottom = 147.0
+theme_override_font_sizes/font_size = 32
+text = "Position 3"
+
+[node name="lineupPosition2Ref" type="Node2D" parent="."]
+position = Vector2(850, 500)
+
+[node name="PositionTitle" type="Label" parent="lineupPosition2Ref"]
+offset_left = -75.0
+offset_top = 102.0
+offset_right = 78.0
+offset_bottom = 147.0
+theme_override_font_sizes/font_size = 32
+text = "Position 2"
+
+[node name="lineupPosition1Ref" type="Node2D" parent="."]
+position = Vector2(1150, 500)
+
+[node name="PositionTitle" type="Label" parent="lineupPosition1Ref"]
+offset_left = -75.0
+offset_top = 102.0
+offset_right = 78.0
+offset_bottom = 147.0
+theme_override_font_sizes/font_size = 32
+text = "Position 1"
+
+[node name="ModeTitle" type="Label" parent="."]
+offset_left = 365.0
+offset_top = 48.0
+offset_right = 491.0
+offset_bottom = 71.0
+theme_override_font_sizes/font_size = 32
+text = "Edit your line up"

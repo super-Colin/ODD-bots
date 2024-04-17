@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://bj6slmoryryxo"]
+
+[ext_resource type="Script" path="res://battle.gd" id="1_oo2sy"]
+
+[sub_resource type="Theme" id="Theme_fjwdk"]
+
+[node name="Battle" type="Node2D"]
+script = ExtResource("1_oo2sy")
+
+[node name="BattleResultText" type="Label" parent="."]
+visible = false
+offset_left = 881.0
+offset_top = 420.0
+offset_right = 949.0
+offset_bottom = 443.0
+theme_override_font_sizes/font_size = 32
+text = "You Win!"
+horizontal_alignment = 1
+
+[node name="EndBattleButton" type="Button" parent="."]
+offset_left = 793.0
+offset_top = 684.0
+offset_right = 999.0
+offset_bottom = 726.0
+theme = SubResource("Theme_fjwdk")
+theme_override_font_sizes/font_size = 24
+text = "Confirm"
+
+[node name="ModeTitle" type="Label" parent="."]
+offset_left = 365.0
+offset_top = 48.0
+offset_right = 491.0
+offset_bottom = 71.0
+theme_override_font_sizes/font_size = 32
+text = "Battle!!!"
