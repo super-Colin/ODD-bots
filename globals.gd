@@ -15,8 +15,8 @@ var musicMuted = false
 # ~~~ VARS
 var gameOver = false
 var sessionScore = 0
-var playerTeam
-var enemyTeam
+var playerTeam : Team
+var enemyTeam : Team
 # ~~~ END VARS
 
 

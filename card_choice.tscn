@@ -11,6 +11,14 @@ offset_bottom = 1121.0
 mouse_filter = 1
 color = Color(0.211765, 0.211765, 0.211765, 0.886275)
 
+[node name="Phase Name" type="Label" parent="."]
+offset_left = 164.0
+offset_top = 17.0
+offset_right = 422.0
+offset_bottom = 84.0
+theme_override_font_sizes/font_size = 48
+text = "Card Choice"
+
 [node name="ConfirmSelection" type="Button" parent="."]
 offset_left = 812.0
 offset_top = 526.0
