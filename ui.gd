@@ -11,9 +11,6 @@ func _ready():
 	Events.ui_hideMainMenu.connect(hideMainMenu)
 
 
-func _process(delta):
-	pass
-
 
 func showGameOver():
 	$GameOver.visible = true

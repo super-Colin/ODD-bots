@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://b2w42bx3x4s4t"]
+
+[ext_resource type="Script" path="res://battle.gd" id="1_k7rr3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i8bx5"]
+size = Vector2(878.5, 539)
+
+[node name="Battle" type="Node2D"]
+script = ExtResource("1_k7rr3")
+
+[node name="PlayerDisplayArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Area" type="CollisionShape2D" parent="PlayerDisplayArea"]
+position = Vector2(494, 352.5)
+shape = SubResource("RectangleShape2D_i8bx5")
+
+[node name="EnemyDisplayArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Area" type="CollisionShape2D" parent="EnemyDisplayArea"]
+position = Vector2(1416, 352.5)
+shape = SubResource("RectangleShape2D_i8bx5")

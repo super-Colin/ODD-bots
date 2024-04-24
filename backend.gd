@@ -2,20 +2,16 @@ extends Node
 
 
 #var botCardScene = preload("res://botCard.tscn")
-#var battleScene = preload("res://battle.tscn")
+var battleScene = preload("res://battle.tscn")
 var cardChoiceScene = preload("res://card_choice.tscn")
 var lineupEditScene = preload("res://lineup_edit.tscn")
 
 
 
 
-
-
-
-
-
 func _ready():
 	Events.game_start.connect(startGame)
+	#Events.game_over.connect(gameOverReset)
 
 
 
@@ -31,47 +27,31 @@ func startGame():
 func proccessGameplayLoopPhase(loopPhase=0):
 # ~~~~~ Start Game ~~~~~
 	if loopPhase == 0:
-# ~~~~~ Create player team and select first bot ~~~~~
+# ~~~~~ Create Player Team ~~~~~
 		Globals.playerTeam = Team.new()
+# ~~~~~ Player Bot Card Choice ~~~~~
 	var newBotChoiceDict = await givePlayerBotChoice(3)
+	#print("new bot addition is : ", newBotChoiceDict)
 	Globals.playerTeam.addBotToTeam(newBotChoiceDict)
-	print("new bot addition is : ", newBotChoiceDict)
-	#print("player team in phase ", gameplayLoopPhase, ", team: ", Globals.playerTeam)
-# ~~~~~ Player edit lineup ~~~~~
+	print("player team in phase ", loopPhase, ", team: ", Globals.playerTeam)
+# ~~~~~ Player Edit Lineup ~~~~~
 	var lineup = lineupEditScene.instantiate()
 	$'.'.add_child(lineup)
 	await lineup.lineupConfirmed
-	Events.mode_gameOver.emit()
 	#print("player team after editing, ", Globals.playerLineup)
-# ~~~~~ Create enemy lineup ~~~~~
-	#enemyTeam = assembleRandomTeam(gameplayLoopPhase)
-#
-## ~~~~~ Start the battle ~~~~~
-	#ongoingBattle = battleScene.instantiate()
-	#$'GameBits'.add_child(ongoingBattle)
-	##ongoingBattle.startNewBattleFromLineups(enemyTeam.getLineup())
-	#Globals.enemyLineup = enemyTeam.getLineup()
-	#ongoingBattle.startNewBattleFromLineups()
-	##ongoingBattle.startBattle()
-	#Events.game_battleMode.emit()
-	#await ongoingBattle.playerConfirmedBattleIsOver
-	#print("battle result winning team '", ongoingBattle.winningTeam, "'")
-	#if ongoingBattle.winningTeam == "enemy" or ongoingBattle.winningTeam == "team2":
-		#gameOverReset()
-		#Events.game_over.emit()
-		#return
-	#if ongoingBattle.winningTeam == "player" or ongoingBattle.winningTeam == "team1" :
-		##print("emiting updated score")
-		#Events.game_updateScoreBackend.emit(Globals.sessionScore + 1)
-	#clearBattle()
-	#Events.game_editLineupMode.emit()
-### ~~~~~ If you lost reset the state ~~~~~
-### ~~~~~ If you won, pick another bot and continue ~~~~~
+# ~~~~~ Create Enemy Lineup ~~~~~
+	assembleRandomTeam(loopPhase)
+	print("ENEMY team in phase ", loopPhase, ", team: ", Globals.enemyTeam)
+# ~~~~~ Start Battle ~~~~~
+	var battle = battleScene.instantiate()
+	$'.'.add_child(battle)
+	await battle.battleFinished
+	#Events.mode_gameOver.emit()
 
 
-
-func showLineupEdit():
-	Events.mode_editLineup.emit()
+func assembleRandomTeam(numberOfBots = 1):
+	Globals.enemyTeam = Team.new()
+	Globals.enemyTeam.addBotToTeam(makeRandomBotDict())
 
 
 func givePlayerBotChoice(_choices=3):
@@ -80,14 +60,14 @@ func givePlayerBotChoice(_choices=3):
 
 
 func showCardChoice(cardOptions:Array):
-	# instantiate a new scene
-	var newChoiceScene = cardChoiceScene.instantiate()
+	var newChoiceScene = cardChoiceScene.instantiate() # instantiate a new scene
 	newChoiceScene.setCardChoices(cardOptions)
 	%GameBits.add_child(newChoiceScene)
 	var resultDict = await newChoiceScene.selection
 	print("choice result is ", resultDict)
+	resultDict = resultDict.toDict()
 	newChoiceScene.queue_free()
-	print("choice result after queueing is ", resultDict)
+	#print("choice result after queueing is ", resultDict)
 	return resultDict
 
 
@@ -95,7 +75,7 @@ func showCardChoice(cardOptions:Array):
 
 
 
-func makeRandomBotDict(parts=0):
+func makeRandomBotDict(_parts=0):
 	var statsDict = CardSet.cores.pick_random()
 	#print(randBot)
 	#var randBot = botCardScene.instantiate()
@@ -103,8 +83,6 @@ func makeRandomBotDict(parts=0):
 	#print("makeRandomBot returning: ", randBot)
 	return statsDict
 	
-
-
 
 
 

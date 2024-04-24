@@ -9,6 +9,13 @@ size = Vector2(1341.5, 539)
 [node name="LineupEdit" type="Node2D"]
 script = ExtResource("1_vpih1")
 
+[node name="DisplayArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Area" type="CollisionShape2D" parent="DisplayArea"]
+position = Vector2(728.25, 352.5)
+shape = SubResource("RectangleShape2D_vaiaw")
+
 [node name="Phase Name" type="Label" parent="."]
 offset_left = 164.0
 offset_top = 17.0
@@ -18,6 +25,7 @@ theme_override_font_sizes/font_size = 48
 text = "Lineup Edit"
 
 [node name="Card" parent="." instance=ExtResource("2_137am")]
+visible = false
 position = Vector2(208, 294)
 
 [node name="1" type="Label" parent="."]
@@ -44,14 +52,11 @@ offset_bottom = 561.0
 theme_override_font_sizes/font_size = 48
 text = "3"
 
-[node name="Button" type="Button" parent="."]
-offset_right = 8.0
-offset_bottom = 8.0
-text = "Confirm Lineup"
-
-[node name="DisplayArea" type="Area2D" parent="."]
+[node name="Confirm" type="Button" parent="."]
 unique_name_in_owner = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DisplayArea"]
-position = Vector2(728.25, 352.5)
-shape = SubResource("RectangleShape2D_vaiaw")
+offset_left = 796.0
+offset_top = 640.0
+offset_right = 982.0
+offset_bottom = 682.0
+theme_override_font_sizes/font_size = 24
+text = "Confirm Lineup"

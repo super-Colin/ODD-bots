@@ -13,14 +13,14 @@ var lastSelection
 
 func _ready():
 	var tween = create_tween()
-	tween.tween_property($ColorRect, "Color", 363636e2, Globals.config_sceneTransitionTime) 
+	tween.tween_property($ColorRect, "color", Color("363636e2"), Globals.config_sceneTransitionTime) 
 	$ConfirmSelection.pressed.connect(confirmedSelection)
 
 
 func confirmedSelection():
 	var tween = create_tween()
-	await tween.tween_property($ColorRect, "Color", 36363600, Globals.config_sceneTransitionTime) 
-	selection.emit(lastSelection.toDict())
+	tween.tween_property($ColorRect, "color", Color("36363600"), Globals.config_sceneTransitionTime) 
+	selection.emit(lastSelection)
 
 
 
@@ -32,7 +32,7 @@ func setCardChoices(choices:Array):
 	var cardNum = 0
 	for choiceDict in choices:
 		var newCard = cardScene.instantiate()
-		newCard.fillFromDict(choiceDict)
+		newCard.updateFromDict(choiceDict)
 		var pos = Vector2(300*cardNum+300, 300)
 		newCard.position = pos
 		print("position is ", pos)

@@ -27,13 +27,11 @@ func unselected():
 
 
 func isClickedEvent(_vPort, eve, _shape):
-	#print(eve)
 	if eve is InputEventMouseButton:
 		if eve.pressed:
 			clickInitiated = true
 		if clickInitiated and eve.pressed == false: # was initiated and let up
 			clickInitiated = false
-			#print("full clicked")
 			fullClicked.emit()
 
 func _mouse_exit():
@@ -44,17 +42,19 @@ func _mouse_exit():
 
 
 
-func fillFromDict(dict:Dictionary):
+func updateFromDict(dict:Dictionary):
 	inDict = dict
 	print("in taking dict is : ", dict)
-	%Label.text = inDict.label
-	%Description.text = inDict.description
+	if inDict.has("label") and not inDict.sprite == null:
+		%Label.text = inDict.label
+	if inDict.has("description") and not inDict.sprite == null:
+		%Description.text = inDict.description
 	if inDict.has("sprite") and not inDict.sprite == null:
-		var spriteIs = load(inDict.sprite)
-		%Sprite.texture = spriteIs
-	if inDict.has("baseHealth"):
+		var theSprite = load(inDict.sprite)
+		%Sprite.texture = theSprite
+	if inDict.has("baseHealth") and not inDict.sprite == null:
 		%Health.text = "%s" % inDict.baseHealth
-	if inDict.has("baseAttack"):
+	if inDict.has("baseAttack") and not inDict.sprite == null:
 		%Health.text = "%s" % inDict.baseAttack
 
 
