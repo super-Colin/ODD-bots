@@ -24,6 +24,7 @@ signal ui_toggleMusicMute
 
 
 signal debug_message(msg)
+signal debug_playerTeam
 
 
 

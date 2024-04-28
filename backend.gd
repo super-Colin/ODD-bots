@@ -19,7 +19,7 @@ func startGame():
 	Globals.gameOver = false
 	var loopPhase=0
 	while not Globals.gameOver:
-		await proccessGameplayLoopPhase(loopPhase)
+		await proccessGameplayLoopPhase(loopPhase) # TODO move this while loop into the function?
 		loopPhase +=1
 
 
@@ -32,8 +32,8 @@ func proccessGameplayLoopPhase(loopPhase=0):
 # ~~~~~ Player Bot Card Choice ~~~~~
 	var newBotChoiceDict = await givePlayerBotChoice(3)
 	#print("new bot addition is : ", newBotChoiceDict)
-	Globals.playerTeam.addBotToTeam(newBotChoiceDict)
-	print("player team in phase ", loopPhase, ", team: ", Globals.playerTeam)
+	Globals.playerTeam.addBotToLineup(newBotChoiceDict)
+	#print("player team in phase ", loopPhase, ", team: ", Globals.playerTeam)
 # ~~~~~ Player Edit Lineup ~~~~~
 	var lineup = lineupEditScene.instantiate()
 	$'.'.add_child(lineup)
@@ -41,17 +41,22 @@ func proccessGameplayLoopPhase(loopPhase=0):
 	#print("player team after editing, ", Globals.playerLineup)
 # ~~~~~ Create Enemy Lineup ~~~~~
 	assembleRandomTeam(loopPhase)
-	print("ENEMY team in phase ", loopPhase, ", team: ", Globals.enemyTeam)
+	#print("ENEMY team in phase ", loopPhase, ", team: ", Globals.enemyTeam)
 # ~~~~~ Start Battle ~~~~~
 	var battle = battleScene.instantiate()
 	$'.'.add_child(battle)
-	await battle.battleFinished
-	#Events.mode_gameOver.emit()
+	var playerWon = await battle.battleFinished
+	if playerWon:
+		print("player won the battle")
+		Globals.sessionScore += 1
+	else:
+		Events.mode_gameOver.emit()
+	battle.queue_free()
+	return
 
-
-func assembleRandomTeam(numberOfBots = 1):
+func assembleRandomTeam(_numberOfBots = 1):
 	Globals.enemyTeam = Team.new()
-	Globals.enemyTeam.addBotToTeam(makeRandomBotDict())
+	Globals.enemyTeam.addBotToLineup(makeRandomBotDict())
 
 
 func givePlayerBotChoice(_choices=3):
@@ -64,7 +69,7 @@ func showCardChoice(cardOptions:Array):
 	newChoiceScene.setCardChoices(cardOptions)
 	%GameBits.add_child(newChoiceScene)
 	var resultDict = await newChoiceScene.selection
-	print("choice result is ", resultDict)
+	#print("choice result is ", resultDict)
 	resultDict = resultDict.toDict()
 	newChoiceScene.queue_free()
 	#print("choice result after queueing is ", resultDict)

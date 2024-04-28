@@ -9,7 +9,17 @@ func _ready():
 	Events.mode_battle.connect(hideMainMenu)
 	Events.mode_gameOver.connect(showGameOver)
 	Events.ui_hideMainMenu.connect(hideMainMenu)
+	Events.game_start.connect(hideMainMenu)
+	$Debug.visible = false
+	connectDebugLayer()
 
+
+func connectDebugLayer():
+	$Debug.visible = true
+	%Button_LogPlayerTeam.pressed.connect(func (): Events.debug_playerTeam.emit())
+	%Button_LogPlayerTeam.pressed.connect(func (): print(Globals.playerTeam) )
+	%Button_LogPlayerTeam.pressed.connect(func (): %DebugLabel.text = "%s" % Globals.playerTeam )
+	$Debug/Button_LogPlayerBot1.pressed.connect(func (): %DebugLabel.text = "%s" % Globals.playerTeam.getBot(1) )
 
 
 func showGameOver():
@@ -18,9 +28,9 @@ func showGameOver():
 
 
 func showMainMenu():
-	$GameOver.visible = true
+	$MainMenu.visible = true
 func hideMainMenu():
-	$GameOver.visible = false
+	$MainMenu.visible = false
 
 
 

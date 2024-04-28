@@ -27,10 +27,10 @@ texture = ExtResource("4_3bhjw")
 
 [node name="Button_StartGame" type="Button" parent="MainMenu"]
 unique_name_in_owner = true
-offset_left = 29.0
-offset_top = 14.0
-offset_right = 125.0
-offset_bottom = 45.0
+offset_left = 870.0
+offset_top = 601.0
+offset_right = 1007.0
+offset_bottom = 643.0
 theme_override_font_sizes/font_size = 24
 text = "Start Game"
 metadata/_edit_use_anchors_ = true
@@ -56,3 +56,39 @@ visible = false
 position = Vector2(965, 658)
 scale = Vector2(1.9043, 1.9043)
 texture = ExtResource("5_6abfi")
+
+[node name="Debug" type="Node2D" parent="."]
+
+[node name="Button_LogPlayerTeam" type="Button" parent="Debug"]
+unique_name_in_owner = true
+offset_left = 1680.0
+offset_top = 976.0
+offset_right = 1817.0
+offset_bottom = 1018.0
+theme_override_font_sizes/font_size = 24
+text = "Log Player Team"
+metadata/_edit_use_anchors_ = true
+
+[node name="DebugLabel" type="Label" parent="Debug"]
+unique_name_in_owner = true
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 1486.0
+offset_top = 155.0
+offset_right = 1948.0
+offset_bottom = 773.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 24
+text = "Waves Won: 0"
+autowrap_mode = 2
+
+[node name="Button_LogPlayerBot1" type="Button" parent="Debug"]
+unique_name_in_owner = true
+offset_left = 1677.0
+offset_top = 917.0
+offset_right = 1876.0
+offset_bottom = 959.0
+theme_override_font_sizes/font_size = 24
+text = "Log Player Bot 1"
+metadata/_edit_use_anchors_ = true

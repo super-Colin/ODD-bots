@@ -9,22 +9,32 @@ var cardScene = preload("res://card.tscn")
 
 
 func _ready():
-	print("rect width is ", displayRectWidth)
+	#print("rect width is ", displayRectWidth)
 	Events.mode_editLineup.emit()
 	%Confirm.pressed.connect(_updateConfirmed)
 	fillLineup()
 
 
+#func fillLineupWithDict():
+	##print("fillLineup team is ", Globals.playerTeam.team)
+	#for lineupPos in Globals.playerTeam.team:
+		##print("lineup pos is ", Globals.playerTeam.team[lineupPos])
+		#var newCard = cardScene.instantiate()
+		#newCard.updateFromDict(Globals.playerTeam.team[lineupPos])
+		#var pos = Vector2(displayRectWidth - (300*lineupPos), 300)
+		#newCard.position = pos
+		#$'.'.add_child(newCard)
+		##print("position is ", pos)
 func fillLineup():
-	print("fillLineup team is ", Globals.playerTeam.team)
+	#print("fillLineup team is ", Globals.playerTeam.team)
 	for lineupPos in Globals.playerTeam.team:
-		print("lineup pos is ", Globals.playerTeam.team[lineupPos])
+		#print("lineup pos is ", Globals.playerTeam.team[lineupPos])
 		var newCard = cardScene.instantiate()
-		newCard.updateFromDict(Globals.playerTeam.team[lineupPos])
+		newCard.updateFromDict(Globals.playerTeam.team[lineupPos].toDict())
 		var pos = Vector2(displayRectWidth - (300*lineupPos), 300)
 		newCard.position = pos
 		$'.'.add_child(newCard)
-		print("position is ", pos)
+		#print("position is ", pos)
 
 
 func swapPositions(pos1, pos2):
@@ -39,7 +49,7 @@ func renderUpdate():
 func _updateConfirmed():
 	lineupConfirmed.emit()
 	$'.'.queue_free()
-	print("freed")
+	#print("freed")
 
 
 
