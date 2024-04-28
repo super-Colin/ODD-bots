@@ -17,18 +17,19 @@ func _ready():
 
 func startGame():
 	Globals.gameOver = false
+	gameplayLoop()
+
+
+func gameplayLoop():
+# ~~~~~ Create Player Team ~~~~~
+	Globals.playerTeam = Team.new()
 	var loopPhase=0
+# ~~~~~ Start Game ~~~~~
 	while not Globals.gameOver:
-		await proccessGameplayLoopPhase(loopPhase) # TODO move this while loop into the function?
+		await proccessGameplayLoopPhase(loopPhase) 
 		loopPhase +=1
 
-
-
 func proccessGameplayLoopPhase(loopPhase=0):
-# ~~~~~ Start Game ~~~~~
-	if loopPhase == 0:
-# ~~~~~ Create Player Team ~~~~~
-		Globals.playerTeam = Team.new()
 # ~~~~~ Player Bot Card Choice ~~~~~
 	var newBotChoiceDict = await givePlayerBotChoice(3)
 	#print("new bot addition is : ", newBotChoiceDict)
@@ -48,7 +49,7 @@ func proccessGameplayLoopPhase(loopPhase=0):
 	var playerWon = await battle.battleFinished
 	if playerWon:
 		print("player won the battle")
-		Globals.sessionScore += 1
+		Events.game_updateSessionScore.emit(1)
 	else:
 		Events.mode_gameOver.emit()
 	battle.queue_free()
@@ -70,7 +71,6 @@ func showCardChoice(cardOptions:Array):
 	%GameBits.add_child(newChoiceScene)
 	var resultDict = await newChoiceScene.selection
 	#print("choice result is ", resultDict)
-	resultDict = resultDict.toDict()
 	newChoiceScene.queue_free()
 	#print("choice result after queueing is ", resultDict)
 	return resultDict

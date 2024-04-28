@@ -21,7 +21,7 @@ func confirmedSelection():
 	if lastSelection:
 		var tween = create_tween()
 		tween.tween_property($ColorRect, "color", Color("36363600"), Globals.config_sceneTransitionTime) 
-		selection.emit(lastSelection)
+		selection.emit(lastSelection.toDict())
 
 
 

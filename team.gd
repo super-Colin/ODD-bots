@@ -8,56 +8,68 @@ var teamDictTemplate = { # "me"
 } # the key is the position in the lineup, it is important
 
 var team = {}
+var botInstances ={}
+var totalBots = 0
 
 
 func _init(inputDict = null):
 	if inputDict:
 		team = inputDict
-	else:
-		#print("team init'd without an input dict")
-		#team = mainDictTemplate
-		pass
 
 func getTeam():
+	return team
+
+func getTeamBots():
+	var botInstances = {}
+	for lPos in team:
+		team[lPos].position = lPos
+		botInstances[lPos] = Bot.new(team[lPos])
+
+func getTeamCopy():
+	var teamCopy = Team.new()
+	for lPos in team:
+		teamCopy.addBotToLineup(team[lPos])
+	return teamCopy
+
+
+func getTeamDict():
 	return team
 
 
 func getTeamDamage():
 	#print("getTeamDamage current team dict is : ", team)
-	return team[1].outgoingAttack()
+	return botInstances[1].outgoingAttack()
 
 
 func getBot(pos):
-	if team.has(pos):
-		return team[pos]
+	if botInstances.has(pos):
+		return botInstances[pos]
+	else:
+		print("that bot position isn't there")
 
 func isDefeated():
-	for lPos in team:
-		if team[lPos].isDead():
+	for lPos in botInstances:
+		if botInstances[lPos].isDead():
 			return true
 	return false
 		
 func resetDefeat():
-	pass
+	for lPos in botInstances:
+		botInstances[lPos].reset()
 
 
 func takeAttack(attackDict):
 	print("team taking attack : ", attackDict)
-	team[1].takeIncomingAttacks(attackDict)
+	botInstances[1].takeIncomingAttacks(attackDict)
 
-## without creating an instance of the bot class
-#func addBotToLineup(bot:Dictionary):
-	#var pos = team.size() + 1
-	#if pos > Globals.config_maxBotsPerTeam:
-		#return
-	#bot.position = pos
-	#team[pos] = bot
 
 func addBotToLineup(bot:Dictionary):
+	totalBots += 1
 	var pos = team.size() + 1
 	if pos > Globals.config_maxBotsPerTeam:
 		return 
 	bot.position = pos
-	team[pos] = Bot.new(bot)
+	team[pos] = bot
+	botInstances[pos] = Bot.new(bot)
 
 

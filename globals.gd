@@ -3,6 +3,7 @@ extends Node
 
 # ~~~ CONFIGS
 var config_maxBotsPerTeam = 3
+var config_scoreToWin = 1
 var config_mainTransitionTime = 0.25
 var config_cardSelectionTime = config_mainTransitionTime
 var config_sceneTransitionTime = 0.5
@@ -41,7 +42,6 @@ func _game_over():
 func game_start():
 	gameOver = false
 	Events.game_start.emit()
-
 
 
 

@@ -10,9 +10,38 @@ var cardScene = preload("res://card.tscn")
 
 var attack_started = false;
 
+@onready var playerTeamCopy = Globals.playerTeam.getTeamCopy()
+@onready var enemyTeamCopy = Globals.enemyTeam.getTeamCopy()
 
 func _ready():
-	playOutBattle()
+	renderTeam(playerTeamCopy)
+	renderTeam(enemyTeamCopy, false)
+	#playOutBattle()
+
+
+
+func renderTeam(team, isPlayer=true):
+	for lineupPos in playerTeamCopy.totalBots+1:
+		if lineupPos == 0:
+			lineupPos +=1
+		print("rendering team, position: ", lineupPos)
+		var bot = playerTeamCopy.getBot(lineupPos)
+		print("lineup pos is ", bot)
+		var newCard = cardScene.instantiate()
+		newCard.updateFromDict(bot.toDict())
+		var pos
+		if isPlayer:
+			pos = Vector2(playerDisplayRectWidth - (300*lineupPos), 300)
+		else:
+			pos = Vector2(enemyDisplayRectWidth + ((enemyDisplayRectWidth / 3) *lineupPos), 300)
+		newCard.position = pos
+		$'.'.add_child(newCard)
+		#print("position is ", pos)
+
+
+
+
+
 
 
 func playOutBattle():
@@ -43,18 +72,6 @@ func playOutBattle():
 				Events.game_over.emit()
 			await get_tree().create_timer(0.5).timeout # wait for 1 second
 
-
-
-func processFrame():
-	#initial render
-	renderFrame()
-	# deal out damage
-#...
-
-
-func renderFrame():
-	renderPLayerTeam()
-	renderEnemyTeam()
 
 
 func renderPLayerTeam():

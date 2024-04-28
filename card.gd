@@ -8,23 +8,15 @@ signal fullClicked
 
 
 var inDict
+var inBot
 var clickInitiated = false
 
 
 func _ready():
 	$'.'.input_event.connect(isClickedEvent)
 
-
-func selected():
-	print("card selected")
-	var tween = create_tween()
-	tween.tween_property($'.', "scale", selectedScale, Globals.config_cardSelectionTime)
-
-func unselected():
-	var tween = create_tween()
-	tween.tween_property($'.', "scale", startingScale, Globals.config_cardSelectionTime)
-
-
+func setInBot(inB:Bot):
+	inBot = inB
 
 func isClickedEvent(_vPort, eve, _shape):
 	if eve is InputEventMouseButton:
@@ -64,9 +56,14 @@ func toDict():
 
 
 
+func selected():
+	print("card selected")
+	var tween = create_tween()
+	tween.tween_property($'.', "scale", selectedScale, Globals.config_cardSelectionTime)
 
-
-
+func unselected():
+	var tween = create_tween()
+	tween.tween_property($'.', "scale", startingScale, Globals.config_cardSelectionTime)
 
 
 
