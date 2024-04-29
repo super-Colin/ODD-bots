@@ -49,6 +49,8 @@ func updateFromDict(cardDict:Dictionary):
 			hitEffect()
 		currentHealth = cardDict.remainingHealth
 		%Health.text = "%s" % currentHealth
+		if currentHealth <= 0 :
+			dead()
 	if cardDict.has("totalAttack"):
 		%Attack.text = "%s" % cardDict.totalAttack
 
@@ -70,8 +72,13 @@ func unselected():
 
 func hitEffect():
 	var tween = create_tween()
-	await tween.tween_property($'.', "rotation", -0.1, 0.1)
+	await tween.tween_property($'.', "rotation", -0.2, 0.1)
 	tween.tween_property($'.', "rotation", 0, 0.5)
+
+func dead():
+	print("card dead")
+	var tween = create_tween()
+	tween.tween_property($'.', "modulate", Color("9c0f31"), Globals.conf_cardSelectionTime)
 
 
 

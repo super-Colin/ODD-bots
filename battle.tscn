@@ -21,3 +21,11 @@ unique_name_in_owner = true
 [node name="Area" type="CollisionShape2D" parent="EnemyDisplayArea"]
 position = Vector2(1416, 352.5)
 shape = SubResource("RectangleShape2D_i8bx5")
+
+[node name="NextStep" type="Button" parent="."]
+offset_left = 912.0
+offset_top = 728.0
+offset_right = 996.0
+offset_bottom = 759.0
+theme_override_font_sizes/font_size = 24
+text = "Next Step"
