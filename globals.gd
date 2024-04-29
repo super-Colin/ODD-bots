@@ -2,45 +2,46 @@ extends Node
 
 
 # ~~~ CONFIGS
-var config_maxBotsPerTeam = 3
-var config_scoreToWin = 1
-var config_mainTransitionTime = 0.25
-var config_cardSelectionTime = config_mainTransitionTime
-var config_sceneTransitionTime = 0.5
+var conf_maxBotsPerTeam = 3
+var conf_scoreToWin = 1
+var conf_mainTransitionTime = 0.25
+var conf_cardSelectionTime = conf_mainTransitionTime
+var conf_sceneTransitionTime = 0.5
 # ~~~ END CONFIGS
 
 
 # ~~~ PREFERENCES
-var volume
-var musicMuted = false
+var pref_volumeModifier : float = 1
+var pref_musicMuted : bool = false
 # ~~~ END PREFERENCES
 
 
 # ~~~ VARS
-var gameOver = false
-var sessionScore = 0
-var playerTeam : Team
-var enemyTeam : Team
+var gameOver : bool = false
+var sessionScore : int = 0
+var playerTeam : Dictionary
+var enemyTeam : Dictionary
 # ~~~ END VARS
 
 
 func _ready():
 	Events.game_updateSessionScore.connect(_game_updateSessionScore)
 	Events.game_over.connect(_game_over)
+	Events.mode_gameOver.connect(_game_over)
 
 
 func _game_updateSessionScore(newScore):
 	sessionScore = newScore
-	Events.game_updateScoreFrontend.emit()
+	Events.game_updateSessionScore.emit()
 
 
 func _game_over():
-	sessionScore = 0
 	gameOver = true
-	playerTeam = null
 
 func game_start():
 	gameOver = false
+	playerTeam = {}
+	sessionScore = 0
 	Events.game_start.emit()
 
 

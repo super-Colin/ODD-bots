@@ -12,15 +12,18 @@ var lastSelection
 
 
 func _ready():
+	Events.mode_gameOver.connect(func (): $'.'.queue_free())
+	Events.mode_gameWin.connect(func (): $'.'.queue_free())
+	Events.mode_cardChoice.emit()
 	var tween = create_tween()
-	tween.tween_property($ColorRect, "color", Color("363636e2"), Globals.config_sceneTransitionTime) 
+	tween.tween_property($ColorRect, "color", Color("363636e2"), Globals.conf_sceneTransitionTime) 
 	$ConfirmSelection.pressed.connect(confirmedSelection)
 
 
 func confirmedSelection():
 	if lastSelection:
 		var tween = create_tween()
-		tween.tween_property($ColorRect, "color", Color("36363600"), Globals.config_sceneTransitionTime) 
+		tween.tween_property($ColorRect, "color", Color("36363600"), Globals.conf_sceneTransitionTime) 
 		selection.emit(lastSelection.toDict())
 
 

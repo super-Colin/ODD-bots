@@ -8,15 +8,13 @@ signal fullClicked
 
 
 var inDict
-var inBot
 var clickInitiated = false
 
+var currentHealth = null
 
 func _ready():
 	$'.'.input_event.connect(isClickedEvent)
 
-func setInBot(inB:Bot):
-	inBot = inB
 
 func isClickedEvent(_vPort, eve, _shape):
 	if eve is InputEventMouseButton:
@@ -34,20 +32,25 @@ func _mouse_exit():
 
 
 
-func updateFromDict(dict:Dictionary):
-	inDict = dict
-	print("in taking dict is : ", dict)
-	if inDict.has("label") and not inDict.sprite == null:
-		%Label.text = inDict.label
-	if inDict.has("description") and not inDict.sprite == null:
-		%Description.text = inDict.description
-	if inDict.has("sprite") and not inDict.sprite == null:
-		var theSprite = load(inDict.sprite)
+func updateFromDict(cardDict:Dictionary):
+	inDict = cardDict
+	#print("in taking dict is : ", dict)
+	#print("updating card face")
+	if cardDict.has("label"):
+		%Label.text = cardDict.label
+	if cardDict.has("description"):
+		%Description.text = cardDict.description
+	if cardDict.has("sprite") and not cardDict.sprite == null:
+		var theSprite = load(cardDict.sprite)
 		%Sprite.texture = theSprite
-	if inDict.has("baseHealth") and not inDict.sprite == null:
-		%Health.text = "%s" % inDict.baseHealth
-	if inDict.has("baseAttack") and not inDict.sprite == null:
-		%Health.text = "%s" % inDict.baseAttack
+	if cardDict.has("remainingHealth"):
+		if currentHealth != null and currentHealth > inDict.remainingHealth:
+			print("card hit")
+			hitEffect()
+		currentHealth = cardDict.remainingHealth
+		%Health.text = "%s" % currentHealth
+	if cardDict.has("totalAttack"):
+		%Attack.text = "%s" % cardDict.totalAttack
 
 
 
@@ -57,13 +60,19 @@ func toDict():
 
 
 func selected():
-	print("card selected")
+	#print("card selected")
 	var tween = create_tween()
-	tween.tween_property($'.', "scale", selectedScale, Globals.config_cardSelectionTime)
+	tween.tween_property($'.', "scale", selectedScale, Globals.conf_cardSelectionTime)
 
 func unselected():
 	var tween = create_tween()
-	tween.tween_property($'.', "scale", startingScale, Globals.config_cardSelectionTime)
+	tween.tween_property($'.', "scale", startingScale, Globals.conf_cardSelectionTime)
+
+func hitEffect():
+	var tween = create_tween()
+	await tween.tween_property($'.', "rotation", -0.1, 0.1)
+	tween.tween_property($'.', "rotation", 0, 0.5)
+
 
 
 

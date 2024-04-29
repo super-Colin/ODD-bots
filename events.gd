@@ -8,6 +8,9 @@ signal mode_settingsMenu
 signal mode_editLineup
 signal mode_battle
 signal mode_gameOver
+signal mode_gameWin
+signal mode_cardChoice
+
 
 signal game_updateSessionScore(intModifier) # 1 to add 1, -1 to take 1
 signal game_setSessionScore(newScore) # will equal this score

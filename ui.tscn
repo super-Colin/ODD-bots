@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://ccabwq2sfc50p"]
+[gd_scene load_steps=7 format=3 uid="uid://ccabwq2sfc50p"]
 
 [ext_resource type="Script" path="res://ui.gd" id="1_mk7xc"]
 [ext_resource type="Texture2D" uid="uid://de2wbn1mkqgn6" path="res://assets/images/BlueSkyBit.png" id="2_govwo"]
 [ext_resource type="Texture2D" uid="uid://bhortd7hssyw5" path="res://assets/images/DoorCutout.png" id="3_2v3ew"]
 [ext_resource type="Texture2D" uid="uid://b5hx8nmpq543e" path="res://assets/images/ArenaCutout.png" id="4_3bhjw"]
 [ext_resource type="Texture2D" uid="uid://dkbunfx5x5f1b" path="res://assets/images/Game_over_brutal.png" id="5_6abfi"]
+[ext_resource type="Texture2D" uid="uid://66jky681t2rq" path="res://assets/images/win9.webp" id="6_882fm"]
 
 [node name="UI" type="Node"]
 script = ExtResource("1_mk7xc")
@@ -37,7 +38,8 @@ metadata/_edit_use_anchors_ = true
 
 [node name="SessionInfo" type="Node2D" parent="."]
 
-[node name="Label" type="Label" parent="SessionInfo"]
+[node name="Score" type="Label" parent="SessionInfo"]
+unique_name_in_owner = true
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -56,6 +58,28 @@ visible = false
 position = Vector2(965, 658)
 scale = Vector2(1.9043, 1.9043)
 texture = ExtResource("5_6abfi")
+
+[node name="GameOver" type="Label" parent="GameOver"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 720.0
+offset_top = 180.0
+offset_right = 1182.0
+offset_bottom = 288.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 60
+text = "Game Over"
+horizontal_alignment = 1
+
+[node name="Button_ResetGame" type="Button" parent="GameOver"]
+offset_left = 848.0
+offset_top = 790.0
+offset_right = 1047.0
+offset_bottom = 832.0
+theme_override_font_sizes/font_size = 32
+text = "Try Again"
+metadata/_edit_use_anchors_ = true
 
 [node name="Debug" type="Node2D" parent="."]
 
@@ -80,7 +104,6 @@ offset_right = 1948.0
 offset_bottom = 773.0
 grow_horizontal = 0
 theme_override_font_sizes/font_size = 24
-text = "Waves Won: 0"
 autowrap_mode = 2
 
 [node name="Button_LogPlayerBot1" type="Button" parent="Debug"]
@@ -91,4 +114,34 @@ offset_right = 1876.0
 offset_bottom = 959.0
 theme_override_font_sizes/font_size = 24
 text = "Log Player Bot 1"
+metadata/_edit_use_anchors_ = true
+
+[node name="WinScreen" type="Node2D" parent="."]
+visible = false
+
+[node name="GameOverWin" type="Sprite2D" parent="WinScreen"]
+position = Vector2(982, 546)
+scale = Vector2(1.9043, 1.9043)
+texture = ExtResource("6_882fm")
+
+[node name="GameOver" type="Label" parent="WinScreen"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 714.0
+offset_top = 635.0
+offset_right = 1176.0
+offset_bottom = 743.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 60
+text = "You Win!"
+horizontal_alignment = 1
+
+[node name="Button_ResetGame" type="Button" parent="WinScreen"]
+offset_left = 848.0
+offset_top = 790.0
+offset_right = 1047.0
+offset_bottom = 832.0
+theme_override_font_sizes/font_size = 32
+text = "Try Again"
 metadata/_edit_use_anchors_ = true

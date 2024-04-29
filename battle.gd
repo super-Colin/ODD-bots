@@ -10,97 +10,91 @@ var cardScene = preload("res://card.tscn")
 
 var attack_started = false;
 
-@onready var playerTeamCopy = Globals.playerTeam.getTeamCopy()
-@onready var enemyTeamCopy = Globals.enemyTeam.getTeamCopy()
+@onready var playerTeamCopy = Globals.playerTeam
+@onready var enemyTeamCopy = Globals.enemyTeam
 
 func _ready():
+	Events.mode_gameOver.connect(func (): $'.'.queue_free())
+	Events.mode_gameWin.connect(func (): $'.'.queue_free())
+	Events.mode_battle.emit()
 	renderTeam(playerTeamCopy)
 	renderTeam(enemyTeamCopy, false)
-	#playOutBattle()
+	playOutBattle()
 
 
 
 func renderTeam(team, isPlayer=true):
-	for lineupPos in playerTeamCopy.totalBots+1:
-		if lineupPos == 0:
-			lineupPos +=1
-		print("rendering team, position: ", lineupPos)
-		var bot = playerTeamCopy.getBot(lineupPos)
-		print("lineup pos is ", bot)
+	for lineupPos in team:
+		#if lineupPos == 0:
+			#lineupPos += 1
+		#print("rendering team, position: ", lineupPos)
+		var botDict = team[lineupPos]
+		#print("lineup pos is ", botDict)
 		var newCard = cardScene.instantiate()
-		newCard.updateFromDict(bot.toDict())
+		newCard.updateFromDict(botDict)
+		team[lineupPos].cardRef = newCard
 		var pos
 		if isPlayer:
-			pos = Vector2(playerDisplayRectWidth - (300*lineupPos), 300)
+			#pos = Vector2(playerDisplayRectWidth - (300*lineupPos), 300)
+			pos = Vector2( (playerDisplayRectWidth / 3) * lineupPos, 0)
 		else:
-			pos = Vector2(enemyDisplayRectWidth + ((enemyDisplayRectWidth / 3) *lineupPos), 300)
+			#pos = Vector2(enemyDisplayRectWidth + ((enemyDisplayRectWidth / 3) *lineupPos), 300)
+			pos = Vector2((enemyDisplayRectWidth / 3) * -lineupPos, 0)
 		newCard.position = pos
-		$'.'.add_child(newCard)
+		if isPlayer:
+			$PlayerDisplayArea/Area.add_child(newCard)
+		else:
+			$EnemyDisplayArea/Area.add_child(newCard)
 		#print("position is ", pos)
 
-
+func sendUpdatesToCards():
+	for lineupPos in playerTeamCopy:
+		print("updating ", lineupPos, " in player team")
+		playerTeamCopy[lineupPos].cardRef.updateFromDict(playerTeamCopy[lineupPos])
+	for lineupPos in enemyTeamCopy:
+		#print("updating ", lineupPos, " in enemy team")
+		enemyTeamCopy[lineupPos].cardRef.updateFromDict(enemyTeamCopy[lineupPos])
 
 
 
 
 
 func playOutBattle():
-	var playerWon = null
-	while playerWon == null:
-		#print('playerWon is null')
-		if attack_started:
-			print("Not attacking, attack code running in background")
-			return
-		else:
-			attack_started = true
-			renderPLayerTeam()
-			renderEnemyTeam()
-			var playerAttack = Globals.playerTeam.getTeamDamage()
-			var enemyAttack = Globals.enemyTeam.getTeamDamage()
-			print("playerAttack is: ", playerAttack)
-			print("enemyAttack is: ", enemyAttack)
-			Globals.enemyTeam.takeAttack(playerAttack)
-			Globals.playerTeam.takeAttack(enemyAttack)
-
-			attack_started = false
-			if Globals.enemyTeam.isDefeated():
-				playerWon = true
-				print("player won the battle")
-				battleFinished.emit(playerWon)
-			if Globals.playerTeam.isDefeated():
-				battleFinished.emit(false)
-				Events.game_over.emit()
-			await get_tree().create_timer(0.5).timeout # wait for 1 second
-
-
-
-func renderPLayerTeam():
-	print("fillLineup team is ", Globals.playerTeam.getTeam())
-	for lineupPos in Globals.playerTeam.team:
-		print("lineup pos is ", Globals.playerTeam.team[lineupPos])
-		var newCard = cardScene.instantiate()
-		newCard.updateFromDict(Globals.playerTeam.team[lineupPos].toDict())
-		var pos = Vector2(playerDisplayRectWidth - (300*lineupPos), 300)
-		newCard.position = pos
-		$'.'.add_child(newCard)
-		print("position is ", pos)
-
-
-func renderEnemyTeam():
-	print("fillLineup team is ", Globals.playerTeam.team)
-	for lineupPos in Globals.playerTeam.team:
-		print("lineup pos is ", Globals.playerTeam.team[lineupPos])
-		var newCard = cardScene.instantiate()
-		newCard.updateFromDict(Globals.playerTeam.team[lineupPos].toDict())
-		var pos = Vector2(enemyDisplayRectWidth + ((enemyDisplayRectWidth / 3) *lineupPos), 300)
-		newCard.position = pos
-		$'.'.add_child(newCard)
-		print("position is ", pos)
-
-
-
-
-
+	var battleOver = false
+	var loopNum = 0
+	while not battleOver:
+		print("starting timer")
+		await get_tree().create_timer(1.5).timeout # wait for 1 second
+		print("timer done")
+		var playerAttack = Helper.team_getDamage(playerTeamCopy)
+		var enemyAttack = Helper.team_getDamage(enemyTeamCopy)
+		#print("playerAttack is: ", playerAttack)
+		print("player team before attack: ", playerTeamCopy)
+		playerTeamCopy = Helper.team_takeAttack(playerTeamCopy, enemyAttack)
+		enemyTeamCopy = Helper.team_takeAttack(enemyTeamCopy, playerAttack)
+		print("player team after attack: ", playerTeamCopy)
+		#print("enemy team after attack: ", enemyTeamCopy)
+		sendUpdatesToCards()
+		print("starting timer")
+		await get_tree().create_timer(1.5).timeout # wait for 1 second
+		print("timer done")
+		#if Globals.enemyTeam.isDefeated():
+		if Helper.team_isDefeated(enemyTeamCopy):
+			battleOver = true
+			print("player is the winner")
+			battleFinished.emit(true)
+			$'.'.queue_free()
+		if Helper.team_isDefeated(playerTeamCopy):
+			battleOver = true
+			battleFinished.emit(false)
+			print("enemy is the winner")
+			Events.game_over.emit()
+			Events.mode_gameOver.emit()
+			$'.'.queue_free()
+		loopNum += 1
+		print("battle loop number : ", loopNum)
+		
+	print("battle played out")
 
 
 
